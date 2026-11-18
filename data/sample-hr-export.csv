@@ -1,0 +1,14 @@
+EmployeeId,FirstName,LastName,Department,Title,IsManager,ManagerEmployeeId
+1001,Dana,Whitfield,Executive,President,true,
+1002,Marcus,Ortega,Finance,Controller,true,1001
+1003,Priya,Natarajan,Finance,AP Specialist,false,1002
+1004,Ellen,Brooks,HR,HR Manager,true,1001
+1005,Tom,Kowalski,ProjectMgmt,Senior Estimator,true,1001
+1006,Rachel,Kim,ProjectMgmt,Project Coordinator,false,1005
+1007,Victor,Haines,Engineering,Engineering Manager,true,1001
+1008,Lena,Fischer,Engineering,Detailer / Drafter,false,1007
+1009,Carlos,Mendez,Shop,Shop Foreman,true,1001
+1010,Jake,Turner,Shop,Fitter / Welder,false,1009
+1011,Owen,Price,Field,Site Superintendent,true,1001
+1012,Sam,Doyle,IT,IT Administrator,false,1001
+1013,Nina,Alvarez,Sales,Business Development Rep,false,1001
