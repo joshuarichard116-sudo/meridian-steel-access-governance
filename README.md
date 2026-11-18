@@ -1,37 +1,39 @@
-# Meridian Steel & Fabrication — Access Governance & RBAC
+# ![Meridian Steel & Fabrication: Access Governance & RBAC](assets/banner.svg)
 
-![Active Directory](https://img.shields.io/badge/Active%20Directory-on--prem-0078D4)
-![Microsoft Entra ID](https://img.shields.io/badge/Microsoft%20Entra%20ID-hybrid-0078D4)
-![Conditional Access](https://img.shields.io/badge/Conditional%20Access-enforced-2E7D32)
-![PIM](https://img.shields.io/badge/PIM-eligible%20roles-2E7D32)
-![PowerShell](https://img.shields.io/badge/PowerShell-automation-5391FE)
+<p>
+  <img alt="Active Directory" src="https://img.shields.io/badge/Active%20Directory-on--prem-423D33?labelColor=27241D">
+  <img alt="Microsoft Entra ID" src="https://img.shields.io/badge/Microsoft%20Entra%20ID-hybrid-423D33?labelColor=27241D">
+  <img alt="Conditional Access enforced" src="https://img.shields.io/badge/Conditional%20Access-enforced-D9A21B?labelColor=27241D">
+  <img alt="PIM eligible roles" src="https://img.shields.io/badge/PIM-eligible%20roles-D9A21B?labelColor=27241D">
+  <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-automation-423D33?labelColor=27241D">
+</p>
 
 This is a hands-on identity and access management (IAM) project. It runs in a **hybrid Active Directory / Microsoft Entra ID lab** and is built around a fictional 50-person structural steel company. Every access decision comes from how that business is organized: who needs what, at what level and why.
 
 > **In one sentence:** I designed department- and tier-based RBAC in on-prem AD, enforced it on NTFS file shares, synced identities to Entra ID, and added Conditional Access and PIM on top. The next phase automates joiner/mover/leaver events from HR.
 
----
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
 
 ## Contents
 
-1. [Scenario](#1-scenario)
-2. [Architecture](#2-architecture)
-3. [Lab environment](#3-lab-environment)
-4. [Access model](#4-access-model)
-5. [File share infrastructure](#5-file-share-infrastructure)
-6. [Identity security layer](#6-identity-security-layer)
-7. [Identity lifecycle automation (JML)](#7-identity-lifecycle-automation-jml)
-8. [Validation & evidence](#8-validation--evidence)
-9. [Design decisions & trade-offs](#9-design-decisions--trade-offs)
-10. [Hardening backlog](#10-hardening-backlog)
-11. [Roadmap](#11-roadmap)
-12. [Lessons learned](#12-lessons-learned)
-13. [Skills demonstrated](#13-skills-demonstrated)
-14. [Repository layout](#14-repository-layout)
+1. [Scenario](#-1-scenario)
+2. [Architecture](#-2-architecture)
+3. [Lab environment](#-3-lab-environment)
+4. [Access model](#-4-access-model)
+5. [File share infrastructure](#-5-file-share-infrastructure)
+6. [Identity security layer](#-6-identity-security-layer)
+7. [Identity lifecycle automation (JML)](#-7-identity-lifecycle-automation-jml)
+8. [Validation & evidence](#-8-validation--evidence)
+9. [Design decisions & trade-offs](#-9-design-decisions--trade-offs)
+10. [Hardening backlog](#-10-hardening-backlog)
+11. [Roadmap](#-11-roadmap)
+12. [Lessons learned](#-12-lessons-learned)
+13. [Skills demonstrated](#-13-skills-demonstrated)
+14. [Repository layout](#-14-repository-layout)
 
----
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
 
-## 1. Scenario
+## 🏭 1. Scenario
 
 **Meridian Steel & Fabrication** is a fictional structural steel fabrication and construction company with about 50 employees. I treated it like a real client engagement. Organizations rarely need "generic" AD structure. They need access that matches how the business actually works.
 
@@ -47,9 +49,10 @@ This is a hands-on identity and access management (IAM) project. It runs in a **
 | IT / Admin | Infrastructure, credentials | Privileged; tiered admin |
 | Sales / Business Development | CRM exports, proposals | Customer data |
 
-## 2. Architecture
+## 🏗️ 2. Architecture
 
 ```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FAF5EE','primaryTextColor':'#27241D','primaryBorderColor':'#423D33','lineColor':'#B8860B','secondaryColor':'#F7F3EC','tertiaryColor':'#F7F3EC','clusterBkg':'#F7F3EC','clusterBorder':'#D9D1C4','titleColor':'#27241D','edgeLabelBackground':'#FAF5EE','textColor':'#27241D'}}}%%
 flowchart LR
     subgraph HR["HR system (planned)"]
         PL[Paylocity<br/>new hire / change / termination]
@@ -79,7 +82,7 @@ flowchart LR
 
 **Source of authority:** on-prem AD is the source of authority for users and groups. Entra ID gets them through sync, so the NTFS permission chain and cloud access use the same group objects.
 
-## 3. Lab environment
+## 🖥️ 3. Lab environment
 
 | Component | Detail |
 |---|---|
@@ -90,7 +93,9 @@ flowchart LR
 | Sync | Azure AD Connect (now *Microsoft Entra Connect Sync*) |
 | Cloud | Microsoft Entra ID tenant with Conditional Access and PIM (Entra ID P2 features) |
 
-## 4. Access model
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
+
+## 🔑 4. Access model
 
 ### 4.1 OU structure
 
@@ -144,11 +149,12 @@ Each department's folder is open only to that department. Inside the department,
 
 `SYSTEM` and `BUILTIN\Administrators` keep Full Control on every folder.
 
-> Cross-department needs, such as Shop reading Engineering's released drawings, are good candidates for **purpose-specific groups** like `SG-Engineering-Drawings-Read`. That's better than adding Shop users to `SG-Engineering-Staff`. See the [hardening backlog](#10-hardening-backlog).
+> Cross-department needs, such as Shop reading Engineering's released drawings, are good candidates for **purpose-specific groups** like `SG-Engineering-Drawings-Read`. That's better than adding Shop users to `SG-Engineering-Staff`. See the [hardening backlog](#-10-hardening-backlog).
 
 ### 4.4 Permission flow
 
 ```mermaid
+%%{init: {'theme':'base','themeVariables':{'primaryColor':'#FAF5EE','primaryTextColor':'#27241D','primaryBorderColor':'#423D33','lineColor':'#B8860B','secondaryColor':'#F7F3EC','tertiaryColor':'#F7F3EC','clusterBkg':'#F7F3EC','clusterBorder':'#D9D1C4','titleColor':'#27241D','edgeLabelBackground':'#FAF5EE','textColor':'#27241D'}}}%%
 flowchart LR
     U[User account] -->|member of| G[SG-Finance-Staff]
     G -->|NTFS: Modify| F[E:\MeridianShares\Finance]
@@ -158,7 +164,7 @@ flowchart LR
 
 **Access goes to groups, never directly to users.** Changing someone's access means changing their group membership. That one change applies on-prem and in the cloud.
 
-## 5. File share infrastructure
+## 📁 5. File share infrastructure
 
 I built the department shares from scratch on the DC so I controlled the whole permission chain myself:
 
@@ -170,7 +176,9 @@ I built the department shares from scratch on the DC so I controlled the whole p
 
 `scripts/03-Set-MeridianSharePermissions.ps1` repeats steps 3–5 the same way every time.
 
-## 6. Identity security layer
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
+
+## 🔐 6. Identity security layer
 
 ### 6.1 Conditional Access
 
@@ -189,7 +197,7 @@ I built the department shares from scratch on the DC so I controlled the whole p
 | Break-glass account | Global Administrator | Permanent **Active** | Emergency access if MFA, PIM or federation fails |
 | Personal admin account | Global Administrator | Permanent **Active** | Lab owner recovery path (would be moved to Eligible in production) |
 
-## 7. Identity lifecycle automation (JML)
+## ⚙️ 7. Identity lifecycle automation (JML)
 
 The goal: **access follows HR events, not manual tickets.**
 
@@ -217,7 +225,9 @@ sequenceDiagram
 | **Mover** | Swap department/tier groups. Old access is **removed**, not just added on top | Planned |
 | **Leaver** | Disable the account, record and strip group memberships, move to `Disabled Users`. Sync then blocks cloud sign-in and SaaS deprovisions | `05-Disable-MeridianUser.ps1` |
 
-## 8. Validation & evidence
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
+
+## ✅ 8. Validation & evidence
 
 | # | Test | Expected result | How verified |
 |---|---|---|---|
@@ -234,7 +244,7 @@ sequenceDiagram
 
 Screenshots: see [`docs/screenshots/`](docs/screenshots/).
 
-## 9. Design decisions & trade-offs
+## ⚖️ 9. Design decisions & trade-offs
 
 | Decision | Why | Trade-off / what I'd change at scale |
 |---|---|---|
@@ -245,7 +255,9 @@ Screenshots: see [`docs/screenshots/`](docs/screenshots/).
 | **Report-only before enforcing CA** | Avoids lockouts, and real sign-in data backs each decision | — |
 | **Break-glass excluded from all CA** | Recovery path if MFA or CA is misconfigured | Must be monitored (alert on every sign-in) and have a long, vaulted credential |
 
-## 10. Hardening backlog
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
+
+## 🛡️ 10. Hardening backlog
 
 These are improvements I identified while reviewing the build. Each one is a production-grade next step.
 
@@ -260,7 +272,7 @@ These are improvements I identified while reviewing the build. Each one is a pro
 - [ ] **Audit file access:** enable Object Access auditing on sensitive shares (HR, Finance, Executive)
 - [ ] **Move file shares off the DC** to a member server or Azure Files with identity-based auth
 
-## 11. Roadmap
+## 🗺️ 11. Roadmap
 
 - [x] Department/tier RBAC model and naming convention
 - [x] On-prem OUs and Global security groups
@@ -273,9 +285,9 @@ These are improvements I identified while reviewing the build. Each one is a pro
 - [ ] HR-driven onboarding (Paylocity → AD → Entra → groups)
 - [ ] Mover workflow (department change = remove old access + add new)
 - [ ] End-to-end SCIM provisioning test (blocked by SaaS paid-tier licensing)
-- [ ] Items from the [hardening backlog](#10-hardening-backlog)
+- [ ] Items from the [hardening backlog](#-10-hardening-backlog)
 
-## 12. Lessons learned
+## 💡 12. Lessons learned
 
 - **Model the business first, then build AD.** The department/tier matrix made every group, folder and policy decision simple.
 - **Where an object is created decides where it can be used.** Cloud-created groups can't be used in on-prem NTFS ACLs without extra tooling, so the source of authority has to be decided early.
@@ -283,7 +295,7 @@ These are improvements I identified while reviewing the build. Each one is a pro
 - **Licensing is part of the architecture.** The Entra-side SCIM configuration was correct. The blocker was the SaaS vendor's paid-tier gating. In a real project, that check belongs in the requirements phase.
 - **Automate the "remove" side, not just the "add" side.** Most access creep comes from movers and leavers who keep old groups.
 
-## 13. Skills demonstrated
+## 🎓 13. Skills demonstrated
 
 | Area | Skills | Maps to |
 |---|---|---|
@@ -296,7 +308,7 @@ These are improvements I identified while reviewing the build. Each one is a pro
 | Governance | Access reviews, access reporting, audit evidence | SC-300 |
 | Virtualization | KVM/virt-manager, virtual disk management | — |
 
-## 14. Repository layout
+## 📂 14. Repository layout
 
 ```
 .
@@ -317,7 +329,7 @@ These are improvements I identified while reviewing the build. Each one is a pro
 
 Every script supports `-WhatIf`. Run with `-WhatIf` first, then for real. See [`scripts/README.md`](scripts/README.md).
 
----
+<p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
 
 ## Tech / tools
 
@@ -325,3 +337,5 @@ Active Directory · Microsoft Entra ID · Microsoft Entra Connect Sync · Condit
 
 <!-- TODO: replace with your LinkedIn profile URL -->
 📫 [LinkedIn](https://www.linkedin.com/)
+
+<!-- pizzazz-recipe: {"pz":1,"kit":"my-color-profile","concept":"Spec Sheet","family":"refined","dev":{"intensity":"standard","flourish":"amber dividers","structure":"slim header"},"sig":"amber rule dividers","pal":{"pri":"#27241D","sec":"#423D33","tint":"#FAF5EE","zeb":"#F7F3EC","mut":"#625B50","ftr":"#6B6358","hair":"#D9D1C4","acc":"#D9A21B","watch":"#B44D12"},"font":{"h":"system-ui","b":"system-ui"},"date":"2026-11-18"} -->
