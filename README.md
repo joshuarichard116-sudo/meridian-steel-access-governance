@@ -335,7 +335,6 @@ Every script supports `-WhatIf`. Run with `-WhatIf` first, then for real. See [`
 
 Active Directory · Microsoft Entra ID · Microsoft Entra Connect Sync · Conditional Access · Privileged Identity Management · NTFS / SMB · PowerShell · KVM / virt-manager
 
-<!-- TODO: replace with your LinkedIn profile URL -->
-📫 [LinkedIn](https://www.linkedin.com/)
+📫 [LinkedIn](https://www.linkedin.com/in/joshua-richard-376140207)
 
 <!-- pizzazz-recipe: {"pz":1,"kit":"my-color-profile","concept":"Spec Sheet","family":"refined","dev":{"intensity":"standard","flourish":"amber dividers","structure":"slim header"},"sig":"amber rule dividers","pal":{"pri":"#27241D","sec":"#423D33","tint":"#FAF5EE","zeb":"#F7F3EC","mut":"#625B50","ftr":"#6B6358","hair":"#D9D1C4","acc":"#D9A21B","watch":"#B44D12"},"font":{"h":"system-ui","b":"system-ui"},"date":"2026-11-18"} -->
