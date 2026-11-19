@@ -10,6 +10,9 @@
 
 This is a hands-on identity and access management (IAM) project. It runs in a **hybrid Active Directory / Microsoft Entra ID lab** and is built around a fictional 50-person structural steel company. Every access decision comes from how that business is organized: who needs what, at what level and why.
 
+> [!NOTE]
+> **Background:** I built this to work through a problem from my day-to-day MSP work. It runs on a separate tenant with a fictional company name, so the full design can be public without exposing any client data.
+
 > **In one sentence:** I designed department- and tier-based RBAC in on-prem AD, enforced it on NTFS file shares, synced identities to Entra ID, and added Conditional Access and PIM on top. The next phase automates joiner/mover/leaver events from HR.
 
 <p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
