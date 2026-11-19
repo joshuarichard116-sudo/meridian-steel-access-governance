@@ -52,7 +52,6 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: "--max-turns 40"
-          show_full_output: true  # TEMP: debugging
           prompt: |
             New content was pushed to main in ${{ github.repository }}.
             Push range: ${{ github.event.before || '' }}..${{ github.sha }}
