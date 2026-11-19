@@ -1,0 +1,77 @@
+# Runs Claude automatically whenever Markdown changes land on main
+# (for example, a new lab write-up pushed by Grok), and styles it using
+# .github/pizzazz/STYLE.md. Claude commits to a claude/ branch and leaves
+# a link to open a pull request; nothing goes live until you merge it.
+#
+# One-time setup: add a repository secret named CLAUDE_CODE_OAUTH_TOKEN
+# (Settings > Secrets and variables > Actions). Until it exists, this
+# workflow skips itself without error.
+
+name: Pizzazz new content
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**.md"
+      - "!.github/**"
+  workflow_dispatch: {}   # lets you run it by hand from the Actions tab
+
+concurrency:
+  group: pizzazz
+  cancel-in-progress: false
+
+jobs:
+  pizzazz:
+    # Skip Claude's own styling commits and merges of its branches, so it never loops.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (!contains(github.event.head_commit.message, '[pizzazz]') &&
+       !contains(github.event.head_commit.message, '/claude/'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    env:
+      HAS_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+    steps:
+      - name: Check for Claude token
+        if: env.HAS_TOKEN != 'true'
+        run: echo "::notice::CLAUDE_CODE_OAUTH_TOKEN secret not set - skipping pizzazz."
+
+      - uses: actions/checkout@v4
+        if: env.HAS_TOKEN == 'true'
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
+        if: env.HAS_TOKEN == 'true'
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: "--max-turns 40"
+          prompt: |
+            New content was pushed to main in ${{ github.repository }}.
+            Push range: ${{ github.event.before || '' }}..${{ github.sha }}
+            (If the start of the range is empty or all zeros, or this is a manual run,
+            treat every README.md / *.md file that has no `pizzazz-recipe` comment as new.)
+
+            Your job: style the new or changed Markdown so it matches the rest of the repo.
+
+            1. Read .github/pizzazz/STYLE.md in full and follow it exactly. It is the
+               source of truth for the palette, banner template, dividers, emoji headings,
+               diagram theme and recipe stamp.
+            2. List the changed Markdown files with
+               `git diff --name-only <start>..<end> -- '*.md'`, ignoring anything under .github/.
+            3. For each changed file, apply the Spec Sheet look to the new or changed parts only.
+               Create banner SVGs in assets/ as the guide describes. Do not touch scripts,
+               configs or data files, and never change facts, numbers, names or commands.
+            4. Run the guide's final check: verify every SVG parses, every relative image
+               path exists, and the table-of-contents anchors match the headings.
+            5. If something already matches the style, leave it alone. If nothing needs
+               changing, make no commit and say so.
+            6. Commit with a message starting with "[pizzazz]" that lists the files styled.
+            7. End with a short summary: which files you styled, what you added, and
+               anything you deliberately left alone.
