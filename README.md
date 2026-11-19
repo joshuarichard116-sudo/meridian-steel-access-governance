@@ -49,7 +49,7 @@ This is a hands-on identity and access management (IAM) project. It runs in a **
 | IT / Admin | Infrastructure, credentials | Privileged; tiered admin |
 | Sales / Business Development | CRM exports, proposals | Customer data |
 
-## 🏗️ 2. Architecture
+## 🧱 2. Architecture
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{'primaryColor':'#FAF5EE','primaryTextColor':'#27241D','primaryBorderColor':'#423D33','lineColor':'#B8860B','secondaryColor':'#F7F3EC','tertiaryColor':'#F7F3EC','clusterBkg':'#F7F3EC','clusterBorder':'#D9D1C4','titleColor':'#27241D','edgeLabelBackground':'#FAF5EE','textColor':'#27241D'}}}%%
@@ -82,7 +82,7 @@ flowchart LR
 
 **Source of authority:** on-prem AD is the source of authority for users and groups. Entra ID gets them through sync, so the NTFS permission chain and cloud access use the same group objects.
 
-## 🖥️ 3. Lab environment
+## 💻 3. Lab environment
 
 | Component | Detail |
 |---|---|
@@ -197,7 +197,7 @@ I built the department shares from scratch on the DC so I controlled the whole p
 | Break-glass account | Global Administrator | Permanent **Active** | Emergency access if MFA, PIM or federation fails |
 | Personal admin account | Global Administrator | Permanent **Active** | Lab owner recovery path (would be moved to Eligible in production) |
 
-## ⚙️ 7. Identity lifecycle automation (JML)
+## 🔄 7. Identity lifecycle automation (JML)
 
 The goal: **access follows HR events, not manual tickets.**
 
@@ -244,7 +244,7 @@ sequenceDiagram
 
 Screenshots: see [`docs/screenshots/`](docs/screenshots/).
 
-## ⚖️ 9. Design decisions & trade-offs
+## 🧠 9. Design decisions & trade-offs
 
 | Decision | Why | Trade-off / what I'd change at scale |
 |---|---|---|
@@ -257,7 +257,7 @@ Screenshots: see [`docs/screenshots/`](docs/screenshots/).
 
 <p align="center"><img src="assets/divider.svg" width="100%" alt=""></p>
 
-## 🛡️ 10. Hardening backlog
+## 🔒 10. Hardening backlog
 
 These are improvements I identified while reviewing the build. Each one is a production-grade next step.
 
@@ -272,7 +272,7 @@ These are improvements I identified while reviewing the build. Each one is a pro
 - [ ] **Audit file access:** enable Object Access auditing on sensitive shares (HR, Finance, Executive)
 - [ ] **Move file shares off the DC** to a member server or Azure Files with identity-based auth
 
-## 🗺️ 11. Roadmap
+## 🧭 11. Roadmap
 
 - [x] Department/tier RBAC model and naming convention
 - [x] On-prem OUs and Global security groups

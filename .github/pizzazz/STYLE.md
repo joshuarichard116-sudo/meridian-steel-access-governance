@@ -11,8 +11,9 @@ This repo uses one house look, called **Spec Sheet**. The GitHub Action in `.git
    - Break up paragraphs longer than about 5 sentences.
 3. **Voice:** first person, professional but human, plain and short sentences, explains why after what. No humor and no emoji in body text.
 4. **Don't stack.** If a file already has a `pizzazz-recipe` comment, only style the parts that are new or changed. Never add a second banner or duplicate badges.
-5. **Leave code alone.** Don't edit scripts (`.ps1`, `.sh`, `.py`, etc.), configs or data files. Only Markdown files and the `assets/` folder.
-6. **Never** add personal data (emails, phone numbers, tenant IDs, IP addresses) and never alter what a screenshot shows.
+5. **Leave templates plain.** Files meant to be copied and filled in (anything under `templates/`, or with "template" in the name) keep their plain layout.
+6. **Leave code alone.** Don't edit scripts (`.ps1`, `.sh`, `.py`, etc.), configs or data files. Only Markdown files and the `assets/` folder.
+7. **Never** add personal data (emails, phone numbers, tenant IDs, IP addresses) and never alter what a screenshot shows.
 
 ## Palette (my-color-profile: warm and grounded, amber accent)
 
@@ -65,7 +66,7 @@ Topic badges use `423D33`; status or outcome badges use `D9A21B`. Only state sta
 
 ### 3. Emoji section headings
 
-Every `##` heading starts with one fitting emoji, e.g. `## 🎯 Goal`, `## 🏗️ Architecture`, `## ✅ Validation`, `## 🧹 Cleanup`. If a table of contents links to headings, update its anchors: GitHub drops the emoji but keeps a leading hyphen, so `## 🎯 Goal` becomes `#-goal`.
+Every `##` heading starts with one fitting emoji, e.g. `## 🎯 Goal`, `## 🧱 Architecture`, `## ✅ Validation`, `## 🧹 Cleanup`. **Only use emoji that are a single character with no hidden variation selector (U+FE0F).** Emoji such as ⚠️ 🏗️ ⚙️ 🛡️ 🗺️ 🖥️ ⚖️ include one, and GitHub keeps it in the heading's link anchor, which breaks table-of-contents links. Safe picks: 🎯 🧱 🧭 🔐 🔒 🔑 🔄 🧠 ✅ 🧾 📦 📚 📂 📄 💡 💲 🚀 🔧 🧩 🧹 🎓 🏭 💻. If a table of contents links to headings, update its anchors: GitHub drops the emoji but keeps a leading hyphen, so `## 🎯 Goal` becomes `#-goal`.
 
 ### 4. Amber dividers (the signature move)
 
