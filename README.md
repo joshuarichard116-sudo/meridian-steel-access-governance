@@ -8,6 +8,8 @@
   <img alt="PowerShell" src="https://img.shields.io/badge/PowerShell-automation-423D33?labelColor=27241D">
 </p>
 
+> 🌐 Part of [Joshua Richard's portfolio](https://joshuarichard116-sudo.github.io/jrichard-web/) · Lead Engineer, CMMC & GCC High · also see the [playable firewall lab](https://joshuarichard116-sudo.github.io/jrichard-web/labs/talvex-firewall/)
+
 This is a hands-on identity and access management (IAM) project. It runs in a **hybrid Active Directory / Microsoft Entra ID lab** and is built around a fictional 50-person structural steel company. Every access decision comes from how that business is organized: who needs what, at what level and why.
 
 > [!NOTE]
