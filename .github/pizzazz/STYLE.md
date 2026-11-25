@@ -1,6 +1,6 @@
-# Pizzazz style guide
+# Pizzazz style guide (the Dress It Up kit)
 
-This repo uses one house look, called **Spec Sheet**. The GitHub Action in `.github/workflows/pizzazz.yml` follows this guide whenever new content is pushed to `main`. A person can follow it too.
+This repo uses one house look, called **Spec Sheet**. The GitHub Action in `.github/workflows/pizzazz.yml` follows this guide whenever new content is pushed to `main`. A person can follow it too, and the **Dress It Up** section below is how Claude uses it interactively in a chat.
 
 ## Ground rules
 
@@ -15,7 +15,42 @@ This repo uses one house look, called **Spec Sheet**. The GitHub Action in `.git
 6. **Leave code alone.** Don't edit scripts (`.ps1`, `.sh`, `.py`, etc.), configs or data files. Only Markdown files and the `assets/` folder.
 7. **Never** add personal data (emails, phone numbers, tenant IDs, IP addresses) and never alter what a screenshot shows.
 
-## Palette (my-color-profile: warm and grounded, amber accent)
+## Dress It Up: ask first, then style
+
+Dress It Up is the interactive way to use this kit. Before styling anything, ask the person a few questions so the result looks like *their* page, not a generic one. Ask them all in one short message, offer the choices shown, and say that any question can be skipped.
+
+1. **What are you building, and who reads it?** (portfolio, lab guide, admin dashboard, tech talk, launch page, runbook, or something else)
+2. **Light, dark, or both?**
+3. **Pick a palette.** Show the [palette library](#palette-library) below as named choices with a one-line vibe each, and mark the one that fits their answer to question 1 as *suggested*. They can also bring their own colors or brand colors.
+4. **Mood:** calm, technical, or bold.
+5. **How much flash:** subtle, standard, or bold. This sets `dev.intensity` in the recipe.
+6. **A page you like** (optional): a link or a screenshot to borrow spacing and structure from. Never copy its logo, name or content.
+
+If a question is skipped, use the default: question 1's suggested palette, light, technical, standard. If they bring their own colors, check that text keeps a contrast ratio of at least 4.5:1 and fix the shade rather than the hue, then give the palette a short vibe name of its own.
+
+**Save the answers.** In a repository, write them to `.github/pizzazz/profile.md` (palette name, the eight hex values, light or dark, mood, intensity, date). Every later run, including the GitHub Action, reads that file first and uses it in place of the default palette, so the next page matches without asking again. In a chat, repeat the profile back at the end so the person can keep it.
+
+**Unattended runs** (the GitHub Action, or anyone running the kit without a person to ask) never ask questions: they use `profile.md` if it exists, and Rustic if it doesn't.
+
+## Palette library
+
+Every palette fills the same eight roles, so the banner, badge, divider and diagram templates below work with any of them: swap the hex values and keep the layout. The banner template uses `tint` for its background and `pri` for its title, so the dark palettes flip naturally. In the diagram `init` line, use `tint` for node fills, `zeb` for groups, `pri` for text and borders, and `acc` for lines.
+
+| Palette | Vibe and best for | pri | sec | tint | zeb | mut | hair | acc | watch |
+|---|---|---|---|---|---|---|---|---|---|
+| **Rustic** (default, `my-color-profile`) | Warm and grounded, amber accent. Portfolios, trades and manufacturing, personal pages, READMEs. | `#27241D` | `#423D33` | `#FAF5EE` | `#F7F3EC` | `#625B50` | `#D9D1C4` | `#D9A21B` | `#B44D12` |
+| **Control Room** | Crisp admin console: slate rail, teal accent. Lab guides, dashboards, firewall and network docs. | `#17232E` | `#22323F` | `#EEF1F4` | `#F5F7F9` | `#5A6878` | `#D5DCE3` | `#0B7A85` | `#C0362C` |
+| **Sea Glass** | Calm and clean: soft green-gray, deep teal, copper. Training pages, internal how-tos, runbooks. | `#1B2624` | `#116466` | `#EEF4F2` | `#DBEEEA` | `#4D605B` | `#D3E2DD` | `#1F8A70` | `#C9773F` |
+| **Night Shift** (dark) | Dark slate with a teal glow and a peach highlight. Tech talks, presentations, dark-first pages. | `#E6F1EE` | `#1A2523` | `#0F1716` | `#1A2523` | `#9FB5AF` | `#2F3D3A` | `#FFCB9A` | `#FF8A7A` |
+| **Aurora** (dark) | Bright and playful: violet, aqua and coral on deep indigo. Launch pages, demos, hackathon projects. | `#ECEBFF` | `#1A1733` | `#0F0D1F` | `#1A1733` | `#A9A5C9` | `#2E2A52` | `#8F7BFF` | `#FF8466` |
+
+Badges: on a light palette, the label background is `pri`, topic values use `sec` and status values use `acc`. On a dark palette, the label background is `sec`, and both topic and status values use `acc`.
+
+The accent rule holds for every palette: never use `acc` as body text on a light background. On the dark palettes, it is fine for headings and links.
+
+## Default palette: Rustic (my-color-profile: warm and grounded, amber accent)
+
+Used when there is no `profile.md` and nobody to ask. The table below gives each role's use.
 
 | Role | Hex | Use |
 |---|---|---|
